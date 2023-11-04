@@ -10,7 +10,6 @@ const getInputFilePath = () => {
 
     const filePath = process.argv[2]
     return filePath
-    //return 'test/fixtures/dicomp10/CT1_UNC'
 }
 
 const getOutputFilePath = () => {
@@ -21,11 +20,7 @@ const getOutputFilePath = () => {
 
     const filePath = process.argv[3]
     return filePath
-    //return 'test/fixtures/dicomp10/CT1_UNC'
 }
-
-
-
 
 openjphjs.onRuntimeInitialized = async _ => {
     try {
