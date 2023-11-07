@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dcmjs": "^0.29.12"
+    "dcmjs": "^0.29.12",
+    "dcmjs-imaging": "^0.1.20"
   }
 }
