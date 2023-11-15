@@ -27,7 +27,6 @@ Transcode DICOM P10 file to DICOM P10 with HTJ2K data
 
 ## TODO
 
-* Refactor code so it is easier to read
 * Publish to npm
 * Add support for batch conversion of many DICOM files
 * Add some integration tests
