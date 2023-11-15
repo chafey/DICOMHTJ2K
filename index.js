@@ -209,6 +209,9 @@ openjphjs.onRuntimeInitialized = async (_) => {
       encoder.setDecompositions(decompositions);
       encoder.setProgressionOrder(2) // RPCL
       encoder.setBlockDimensions({width: 64, height:64}) // block size
+      encoder.setTLMMarker(true)
+      encoder.setTilePartDivisionsAtResolutions(true)
+
       const decodedBytes = encoder.getDecodedBuffer(imageFrame);
       decodedBytes.set(framePixelData);
       encoder.encode();

@@ -23,13 +23,12 @@ Install NPM Packages
 
 Transcode DICOM P10 file to DICOM P10 with HTJ2K data
 
-> node index.js test/fixtures/dicomp10/CT1_UNC foo.dcm
+> node index.js test/fixtures/dicomp10/XA1_UNC test/fixtures/htj2k/XA1_JPH
 
 ## TODO
 
 * Refactor code so it is easier to read
 * Publish to npm
 * Add support for batch conversion of many DICOM files
-* Add transcoded images to the fixtures directory
 * Add some integration tests
 * Test for pathological cases (e.g. structured reports, unknown transfer syntax, etc)
