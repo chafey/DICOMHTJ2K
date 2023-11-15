@@ -5,7 +5,6 @@ DICOM HTJ2K tools
 
 ### Limitations
 * Does not set the photometric interpretation properly for color images (leaves photometric interpretation as it is)
-* Uses the JPEG2000 Lossless only transfer syntax (this will be updated to the official one once it is decided)
 
 ### Setup
 

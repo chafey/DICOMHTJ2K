@@ -130,6 +130,17 @@ const getFrameBuffer = (dataset, transferSyntaxUid, frame) => {
   }
 };
 
+const calculateDecompositions =  (width, height) => {
+  decompositions = 0
+  while(width > 64 || height > 64) {
+    decompositions ++
+    width = Math.floor(width/2)
+    height = Math.floor(height/2)
+  }
+  return decompositions
+}
+
+
 openjphjs.onRuntimeInitialized = async (_) => {
   try {
     // get input parameters
@@ -177,8 +188,12 @@ openjphjs.onRuntimeInitialized = async (_) => {
         isUsingColorTransform: dataset.SamplesPerPixel === 3,
       };
 
+      // calculate the number of decompositions
+      const decompositions = calculateDecompositions(imageFrame.width, imageFrame.height);
+
       // encode the pixel data to htj2k
       const encoder = new openjphjs.HTJ2KEncoder();
+      encoder.setDecompositions(decompositions);
       const decodedBytes = encoder.getDecodedBuffer(imageFrame);
       decodedBytes.set(framePixelData);
       encoder.encode();
@@ -197,7 +212,7 @@ openjphjs.onRuntimeInitialized = async (_) => {
     // WRITE OUT DICOM P10 FILE WITH HTJ2K PIXEL DATA
     //////////////////////////////////////////////////////////////////
     
-    meta.TransferSyntaxUID = { Value: ['1.2.840.10008.1.2.4.90'] }; // USE JPEG2000 for now...
+    meta.TransferSyntaxUID = { Value: ['1.2.840.10008.1.2.4.202'] }; // HTJ2K Constrained Transfer Syntax
     dataset.PixelData = encodedFrames;
     dataset._meta = meta;
     const dicomP10New = Buffer.from(
