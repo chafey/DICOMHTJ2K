@@ -3,6 +3,9 @@ const dcmjs = require('dcmjs');
 const openjphjs = require('./extern/openjphjs/dist/openjphjs.js');
 
 const dcmjsImaging = require('dcmjs-imaging');
+
+dcmjs.log.level = 'error' // disable annoying warnings
+
 // Mimics a class not exported by dcmjs-imaging
 const pixelShim = (
   width,
@@ -140,6 +143,13 @@ const calculateDecompositions =  (width, height) => {
   return decompositions
 }
 
+const applyColorTransform = (dataset) => {
+  return (
+    dataset.SamplesPerPixel === 3 &&                    // must be a color image
+    dataset.PhotometricInterpretation !== "YBR_FULL"    // must not be YBR_FULL
+  )
+}
+
 
 openjphjs.onRuntimeInitialized = async (_) => {
   try {
@@ -173,6 +183,9 @@ openjphjs.onRuntimeInitialized = async (_) => {
     // ENCODE THE PIXEL DATA AS HTJ2k
     //////////////////////////////////////////////////////////////////
     
+    const isUsingColorTransform = applyColorTransform(dataset)
+    console.log('isUsingColorTransform=', isUsingColorTransform)
+
     const encodedFrames = [];
     for (let i = 0; i < numberOfFrames; i++) {
       // get frame pixel data
@@ -185,7 +198,7 @@ openjphjs.onRuntimeInitialized = async (_) => {
         bitsPerSample: dataset.BitsStored,
         componentCount: dataset.SamplesPerPixel ?? 1,
         isSigned: dataset.PixelRepresentation == 1,
-        isUsingColorTransform: dataset.SamplesPerPixel === 3,
+        isUsingColorTransform: isUsingColorTransform,
       };
 
       // calculate the number of decompositions
@@ -199,7 +212,7 @@ openjphjs.onRuntimeInitialized = async (_) => {
       encoder.encode();
       const encodedBytes = encoder.getEncodedBuffer();
 
-      console.log(`  frame=${i}, encoded length=${encodedBytes.length}`);
+      //console.log(`  frame=${i}, encoded length=${encodedBytes.length}`);
       encodedFrames.push(
         encodedBytes.buffer.slice(
           encodedBytes.byteOffset,
@@ -211,10 +224,15 @@ openjphjs.onRuntimeInitialized = async (_) => {
     //////////////////////////////////////////////////////////////////
     // WRITE OUT DICOM P10 FILE WITH HTJ2K PIXEL DATA
     //////////////////////////////////////////////////////////////////
-    
+
+    // Update the photometric interpretation
+    if(isUsingColorTransform) {
+      dataset.PhotometricInterpretation = "YBR_RCT"
+    }
+
     meta.TransferSyntaxUID = { Value: ['1.2.840.10008.1.2.4.202'] }; // HTJ2K Constrained Transfer Syntax
-    dataset.PixelData = encodedFrames;
     dataset._meta = meta;
+    dataset.PixelData = encodedFrames;
     const dicomP10New = Buffer.from(
       dcmjs.data.datasetToDict(dataset).write({ fragmentMultiframe: false })
     );

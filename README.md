@@ -3,9 +3,6 @@ DICOM HTJ2K tools
 
 ## Transcode DICOM P10 file to DICOM P10 HTJ2K
 
-### Limitations
-* Does not set the photometric interpretation properly for color images (leaves photometric interpretation as it is)
-
 ### Setup
 
 Pull git submodues
