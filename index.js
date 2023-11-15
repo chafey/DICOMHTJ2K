@@ -135,7 +135,7 @@ const getFrameBuffer = (dataset, transferSyntaxUid, frame) => {
 
 const calculateDecompositions =  (width, height) => {
   decompositions = 0
-  while(width > 64 || height > 64) {
+  while(width > 64 && height > 64) {
     decompositions ++
     width = Math.floor(width/2)
     height = Math.floor(height/2)
@@ -207,6 +207,8 @@ openjphjs.onRuntimeInitialized = async (_) => {
       // encode the pixel data to htj2k
       const encoder = new openjphjs.HTJ2KEncoder();
       encoder.setDecompositions(decompositions);
+      encoder.setProgressionOrder(2) // RPCL
+      encoder.setBlockDimensions({width: 64, height:64}) // block size
       const decodedBytes = encoder.getDecodedBuffer(imageFrame);
       decodedBytes.set(framePixelData);
       encoder.encode();
