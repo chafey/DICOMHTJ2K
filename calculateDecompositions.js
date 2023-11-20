@@ -1,11 +1,18 @@
+/**
+ * Calculates the number of decompositions based the image width and height.
+ * @param {number} width - The image width.
+ * @param {number} height - The image height.
+ * @returns {number} The number of decompositions.
+ */
 const calculateDecompositions = (width, height) => {
-    decompositions = 0
-    while(width > 64 && height > 64) {
-      decompositions ++
-      width = Math.floor(width/2)
-      height = Math.floor(height/2)
-    }
-    return decompositions
-}
+  let decompositions = 0;
+  while (width > 64 && height > 64) {
+    decompositions++;
+    width = Math.floor(width / 2);
+    height = Math.floor(height / 2);
+  }
 
-module.exports = calculateDecompositions
+  return decompositions;
+};
+
+module.exports = calculateDecompositions;
