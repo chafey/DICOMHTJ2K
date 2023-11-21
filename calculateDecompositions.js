@@ -8,8 +8,8 @@ const calculateDecompositions = (width, height) => {
   let decompositions = 0;
   while (width > 64 && height > 64) {
     decompositions++;
-    width = Math.floor(width / 2);
-    height = Math.floor(height / 2);
+    width = Math.ceil(width / 2);
+    height = Math.ceil(height / 2);
   }
 
   return decompositions;
