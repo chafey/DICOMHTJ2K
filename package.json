@@ -1,6 +1,6 @@
 {
   "name": "dicomhtj2k",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "DICOM HTJ2K tools",
   "main": "index.js",
   "scripts": {
