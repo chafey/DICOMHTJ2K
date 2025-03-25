@@ -1,6 +1,6 @@
 {
   "name": "dicomhtj2k",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "DICOM HTJ2K tools",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dcmjs": "^0.29.12",
-    "dcmjs-imaging": "^0.1.20"
+    "dcmjs": "^0.30.0",
+    "dcmjs-imaging": "^0.1.22"
   }
 }
